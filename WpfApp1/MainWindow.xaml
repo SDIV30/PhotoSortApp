@@ -1,0 +1,78 @@
+﻿<Window x:Class="WpfApp1.MainWindow" 
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp1"
+        mc:Ignorable="d"
+        Loaded="ImgSetSize"
+        SizeChanged="ImgSetSize"
+        Title="SPim" Height="800" Width="1100" WindowState="Normal" ResizeMode="CanResize" MinHeight="600" MinWidth="800"
+        >
+    <!--<Window.InputBindings>
+        <KeyBinding />
+    </Window.InputBindings>-->
+    <DockPanel KeyDown="Grid_KeyDown">
+        <Menu Height="25" VerticalAlignment="Top" DockPanel.Dock="Top" Focusable="False">
+            <MenuItem Header="Get Directory" Focusable="False">
+                <MenuItem Header="New Directory" Click="GDirectory" Focusable="False"></MenuItem>
+                <MenuItem Header="Recent Files" ItemsSource="{Binding shortName}"  DockPanel.Dock="Top" Click="MakeMenuItem">
+                    <MenuItem.ItemTemplate>
+                        <DataTemplate>
+                            <MenuItem Header="{Binding .}"></MenuItem>
+                        </DataTemplate>
+                    </MenuItem.ItemTemplate>
+                </MenuItem>
+            </MenuItem>
+            <MenuItem Header="Save Favorites" Click="SImg" Focusable="False"></MenuItem>
+        </Menu>
+        <Grid DockPanel.Dock="Bottom">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="17*"/>
+                <ColumnDefinition Width="216*"/>
+                <ColumnDefinition Width="168"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition MinHeight="300" MaxHeight="{Binding ActualHeight, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"/>
+            </Grid.RowDefinitions>
+
+            <!--<Menu Height="25" VerticalAlignment="Top" Grid.Row="0" Focusable="False">
+                <MenuItem Header="Get Directory" Focusable="False">
+                    <MenuItem Header="New Directory" Click="GDirectory" Focusable="False"></MenuItem>
+                    <MenuItem Header="Recent" Focusable="False"></MenuItem>
+                </MenuItem>
+                <MenuItem Header="Save Favorites" Click="SImg" Focusable="False"></MenuItem>
+            </Menu>-->
+            <!--Image and it's description-->
+            <StackPanel Grid.Column="0" Grid.ColumnSpan="2">
+
+                <Image HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto" Width="auto" x:Name="ImagePic"
+                    MinHeight="300" MinWidth="300" Grid.Column="0" RenderOptions.BitmapScalingMode="HighQuality" 
+                   />
+            </StackPanel>
+
+            <StackPanel Width="168" Grid.Column="2">
+
+                <Button Content="Get Directory" MinHeight="48" MinWidth="96" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                    Height="48" Width="96" Click="GDirectory" Grid.Column="0" Margin="0,10,0,10" FontFamily="Segoe UI"/>
+
+                <Label Content="File name" HorizontalAlignment="Center" DockPanel.Dock="Top" VerticalAlignment="Top" Name="PathFold"/>
+                <Label x:Name="counterPics" Content="0/0" HorizontalContentAlignment="Center" MinHeight="32" Height="32" MinWidth="96" Width="96" Margin="0,10,0,10" FontFamily="Segoe UI"/>
+                <!--left right buttons-->
+                <DockPanel Width="96" LastChildFill="False" Margin="0,10,0,10">
+                    <Button  x:Name="NextImg" DockPanel.Dock="Right" Content="&gt;" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Height="32" Width="32" MinHeight="32" MinWidth="32" FontSize="16" Click="NImg"/>
+                    <Button x:Name="PervImg" DockPanel.Dock="Left" Content="&lt;"   VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Height="32" Width="32" MinHeight="32" MinWidth="32" FontSize="16" Click="PImg"/>
+                </DockPanel>
+                <!--favorite buttons-->
+                <DockPanel LastChildFill="False" Width="144" Margin="0,10,0,10">
+                    <Button x:Name="FavImg" DockPanel.Dock="Left" Content="Fav/Unfav" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Height="32" Width="96" MinHeight="32" MinWidth="96"  Click="FImg" FontFamily="Segoe UI"/>
+                    <Image Name="HeartFav" DockPanel.Dock="Right" Height="32" Width="32" MinHeight="32" MinWidth="32" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"  />
+                </DockPanel>
+
+                <Button Margin="0,10,0,10" Content="Save Favs"   Height="32" Width="96"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MinHeight="32" MinWidth="96" Click="SImg" FontFamily="Segoe UI"/>
+            </StackPanel>
+        </Grid>
+    </DockPanel>
+    <!--<DockPanel>
+    </DockPanel>-->
+</Window>
