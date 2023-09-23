@@ -201,17 +201,17 @@ namespace WpfApp1
         {
             if (favoritePicturesList.Count!=0)
             {
-                CommonOpenFileDialog fvdlg = new CommonOpenFileDialog();
+                CommonOpenFileDialog _fileDialog = new CommonOpenFileDialog();
                 
-                fvdlg.InitialDirectory= Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
-                fvdlg.IsFolderPicker = true;
+                _fileDialog.InitialDirectory= Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
+                _fileDialog.IsFolderPicker = true;
                 //Nullable<bool> result = fvdlg.ShowDialog();
                 MessageBoxResult Mres;
                 //var msg = "File " + favoritePicturesList[currentFiles].Name +" already exists in directory, rewrite it?";
                 var titlem = "File already in folder";
-                if (fvdlg.ShowDialog()==CommonFileDialogResult.Ok)
+                if (_fileDialog.ShowDialog()==CommonFileDialogResult.Ok)
                 {
-                    string path = Path.GetDirectoryName(fvdlg.FileName+"\\"); //выбирает не ту папку                                                                   
+                    string path = Path.GetDirectoryName(_fileDialog.FileName+"\\"); //выбирает не ту папку                                                                   
                     for (int i = 0; i < favoritePicturesList.Count; i++)
                     {
                         var msg = "File " + favoritePicturesList[i].Name + " already exists in directory, rewrite it?";

@@ -16,7 +16,7 @@
         <Menu Height="25" VerticalAlignment="Top" DockPanel.Dock="Top" Focusable="False">
             <MenuItem Header="Get Directory" Focusable="False">
                 <MenuItem Header="New Directory" Click="GDirectory" Focusable="False"></MenuItem>
-                <MenuItem Header="Recent Files" ItemsSource="{Binding shortName}"  DockPanel.Dock="Top" Click="MakeMenuItem">
+                <MenuItem Header="Recent Files" ItemsSource="{Binding shortName}"  DockPanel.Dock="Top" Click="MakeMenuItem"> <!--через биндиг сделано создание новых путей-->
                     <MenuItem.ItemTemplate>
                         <DataTemplate>
                             <MenuItem Header="{Binding .}"></MenuItem>
