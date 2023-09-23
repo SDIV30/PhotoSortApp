@@ -295,13 +295,18 @@ namespace WpfApp1
         //методы на клавиши
         private void Grid_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
-            if (e.Key == Key.Right)
-            { NextI(); }
-            if (e.Key == Key.Left)
-            { PrevI(); }
-            //на пробел добавляем в избранное
-            if (e.Key == Key.Space)
-            { FavI(); }
+            switch (e.Key)
+            {
+                case Key.Right:
+                    NextI();
+                    break ;
+                case Key.Left:
+                    PrevI();
+                    break;
+                case Key.Space:
+                    FavI();
+                    break;
+            }
         }
 
         private void MakeMenuItem(object sender, RoutedEventArgs e)//currently unused неиспользуется
