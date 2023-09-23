@@ -8,15 +8,17 @@
         Loaded="ImgSetSize"
         SizeChanged="ImgSetSize"
         Title="SPim" Height="800" Width="1100" WindowState="Normal" ResizeMode="CanResize" MinHeight="600" MinWidth="800"
+        FocusManager.FocusedElement="{Binding ElementName=NextImg}"
         >
     <!--<Window.InputBindings>
         <KeyBinding />
     </Window.InputBindings>-->
-    <DockPanel KeyDown="Grid_KeyDown">
+    <DockPanel KeyDown="HandleKeys">
         <Menu Height="25" VerticalAlignment="Top" DockPanel.Dock="Top" Focusable="False">
             <MenuItem Header="Get Directory" Focusable="False">
                 <MenuItem Header="New Directory" Click="GDirectory" Focusable="False"></MenuItem>
-                <MenuItem Header="Recent Files" ItemsSource="{Binding shortName}"  DockPanel.Dock="Top" Click="MakeMenuItem"> <!--через биндиг сделано создание новых путей-->
+                <MenuItem Header="Recent Files" ItemsSource="{Binding shortName}"  DockPanel.Dock="Top" Click="MakeMenuItem">
+                    <!--через биндиг сделано создание новых путей-->
                     <MenuItem.ItemTemplate>
                         <DataTemplate>
                             <MenuItem Header="{Binding .}"></MenuItem>
@@ -54,25 +56,23 @@
             <StackPanel Width="168" Grid.Column="2">
 
                 <Button Content="Get Directory" MinHeight="48" MinWidth="96" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
-                    Height="48" Width="96" Click="GDirectory" Grid.Column="0" Margin="0,10,0,10" FontFamily="Segoe UI"/>
+                    Height="48" Width="96" Click="GDirectory" Grid.Column="0" Margin="0,10,0,10" FontFamily="Segoe UI" Focusable="False"/>
 
                 <Label Content="File name" HorizontalAlignment="Center" DockPanel.Dock="Top" VerticalAlignment="Top" Name="PathFold"/>
                 <Label x:Name="counterPics" Content="0/0" HorizontalContentAlignment="Center" MinHeight="32" Height="32" MinWidth="96" Width="96" Margin="0,10,0,10" FontFamily="Segoe UI"/>
                 <!--left right buttons-->
                 <DockPanel Width="96" LastChildFill="False" Margin="0,10,0,10">
-                    <Button  x:Name="NextImg" DockPanel.Dock="Right" Content="&gt;" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Height="32" Width="32" MinHeight="32" MinWidth="32" FontSize="16" Click="NImg"/>
-                    <Button x:Name="PervImg" DockPanel.Dock="Left" Content="&lt;"   VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Height="32" Width="32" MinHeight="32" MinWidth="32" FontSize="16" Click="PImg"/>
+                    <Button  x:Name="NextImg" DockPanel.Dock="Right" Content="&gt;" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Height="32" Width="32" MinHeight="32" MinWidth="32" FontSize="16" Click="NImg" />
+                    <Button x:Name="PervImg" DockPanel.Dock="Left" Content="&lt;"   VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Height="32" Width="32" MinHeight="32" MinWidth="32" FontSize="16" Click="PImg" />
                 </DockPanel>
                 <!--favorite buttons-->
                 <DockPanel LastChildFill="False" Width="144" Margin="0,10,0,10">
-                    <Button x:Name="FavImg" DockPanel.Dock="Left" Content="Fav/Unfav" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Height="32" Width="96" MinHeight="32" MinWidth="96"  Click="FImg" FontFamily="Segoe UI"/>
+                    <Button x:Name="FavImg" DockPanel.Dock="Left" Content="Fav/Unfav" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Height="32" Width="96" MinHeight="32" MinWidth="96"  Click="FImg" FontFamily="Segoe UI" Focusable="False"/>
                     <Image Name="HeartFav" DockPanel.Dock="Right" Height="32" Width="32" MinHeight="32" MinWidth="32" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"  />
                 </DockPanel>
 
-                <Button Margin="0,10,0,10" Content="Save Favs"   Height="32" Width="96"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MinHeight="32" MinWidth="96" Click="SImg" FontFamily="Segoe UI"/>
+                <Button Margin="0,10,0,10" Content="Save Favs"   Height="32" Width="96"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MinHeight="32" MinWidth="96" Click="SImg" FontFamily="Segoe UI" Focusable="False"/>
             </StackPanel>
         </Grid>
     </DockPanel>
-    <!--<DockPanel>
-    </DockPanel>-->
 </Window>

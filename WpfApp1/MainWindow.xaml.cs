@@ -34,13 +34,10 @@ namespace WpfApp1
     /// </summary>
     public partial class MainWindow : Window
     {
-        // string ImPath ="";
-        readonly string[] extensions = new[] { ".jpg", ".png", ".bmp", ".jpeg" };//доступные расширения пикч мб .CR2
+        readonly string[] extensions = new[] { ".jpg", ".png", ".bmp", ".jpeg" };//avalable image extensions mb add .CR2
         List<FileInfo> picturesList = new List<FileInfo>();
-        List<FileInfo> favoritePicturesList = new List<FileInfo>();//избранные файлы
-        //JumpList resF = new JumpList();
+        List<FileInfo> favoritePicturesList = new List<FileInfo>();//selected fav files
         
-        //resF.ShowRecentCategory = true; //джамплист ДОДЕЛАТЬ!!!
         int MaxFiles=0;
         int currentFiles = 0;
         string newFilePath = "";
@@ -64,10 +61,6 @@ namespace WpfApp1
 */
 
         }
-        //private void Zoom(object sender, RoutedEventArgs e)//добавить возможность по клику на картинку открывать её фулскрин
-        //{
-        //    Fzoom();
-        //}
 
         private void ImgSetSize(object sender, RoutedEventArgs e)
         {
@@ -99,16 +92,17 @@ namespace WpfApp1
                 picturesList = picturesDirectory.GetFiles().Where(f => extensions.Contains(f.Extension.ToLower())).ToList();//набор в массив по расширению
 
                 if (picturesList.Count != 0)
-                {//подгрузка менюшки
-                    //qqq.Insert(0, picDir.FullName);// продумать коротокий путь + строка 274
-                    //shrtName.Insert(0, picDir.Root + "...\\" + picDir.Parent + "\\" + picDir.Name);//короткий путь
+                {//upper menu loader
+                    //qqq.Insert(0, picDir.FullName);
+                    //shrtName.Insert(0, picDir.Root + "...\\" + picDir.Parent + "\\" + picDir.Name);//short path
                     //while (qqq.Count > 10)
                     //{
                     //    shrtName.RemoveAt(10);
                     //    qqq.RemoveAt(10);
                     //}
                     //Properties.Settings.Default.Save();
-                    //работа с счетчиком и тп
+                    
+                    //counters
                     PathFold.Content = newFilePath;
                     MaxFiles = picturesList.Count() - 1;
                     PathFold.Content = picturesList[0];
@@ -122,38 +116,8 @@ namespace WpfApp1
                     System.Windows.MessageBox.Show("Directory has no files or none of them are: JPG,PNG,JPEG,BMP.");
             }
         }
-        //private void fromFolderLoad(string path)//если что закоментить
-        //{
-        //    DirectoryInfo dirInfo = new DirectoryInfo(path);
-        //    newFilePath = dirInfo.FullName + "\\";
-        //    DirectoryInfo picturesDirectory = new DirectoryInfo(newFilePath);
-        //    //ImPath = Npath;
-        //    picturesList = picturesDirectory.GetFiles().Where(f => extensions.Contains(f.Extension.ToLower())).ToList();//набор в массив по расширению
 
-        //    if (picturesList.Count != 0)
-        //    {//подгрузка менюшки
-        //        recentFilesCollection.Insert(0, picturesDirectory.FullName);// продумать коротокий путь + строка 274
-        //        shortName.Insert(0, picturesDirectory.Root + "...\\" + picturesDirectory.Parent + "\\" + picturesDirectory.Name);//короткий путь
-        //        while (recentFilesCollection.Count > 10)
-        //        {
-        //            shortName.RemoveAt(10);
-        //            recentFilesCollection.RemoveAt(10);
-        //        }
-        //        Properties.Settings.Default.Save();
-        //        //работа с счетчиком и тп
-        //        PathFold.Content = newFilePath;
-        //        MaxFiles = picturesList.Count() - 1;
-        //        PathFold.Content = picturesList[0];
-        //        var Uri = new Uri(newFilePath + '\\' + Convert.ToString(picturesList[currentFiles]));
-        //        var bitmap = new BitmapImage(Uri);
-        //        ImagePic.Source = bitmap;
-        //        counterPics.Content = Convert.ToString(currentFiles + 1) + "/" + Convert.ToString(MaxFiles + 1);
-        //    }
-        //    else
-        //        System.Windows.MessageBox.Show("Directory has no files or none of them are: JPG,PNG,JPEG,BMP.");
-        //}
-
-        private void loadHeart()//zoom on image with click
+        private void loadHeart()//loading heart png
         {
             
             var uriFavorite = new Uri(@"\Imagery\heartF.png", UriKind.Relative);
@@ -182,23 +146,16 @@ namespace WpfApp1
                 {
                     favoritePicturesList.Add(picturesList[currentFiles]);//список собирает файлы из нынешней директории, при смене чистится
                     loadHeart();
-                }
-                   
-                    
+                }                                    
                 else
-                    { //паралельно проверяются файлы они в этом листе или нет, чтоб показать сердечко на фаворитов
-                    //string message = "Image is already in favorites, would you like to remove it?";
-                    //string title = "Duplicate";
-                    //if(System.Windows.MessageBox.Show(message, title, MessageBoxButton.OKCancel) == MessageBoxResult.OK)
-                    //{
+                { 
                         favoritePicturesList.Remove(picturesList[currentFiles]);
                         loadHeart();
-                    //}
-                }
                 }
             }
+        }
             
-        private void SaveI()//ДОБАВИТЬ СОХРАНЕНИЕ ФАВОРИТОВ
+        private void SaveI()//saving image
         {
             if (favoritePicturesList.Count!=0)
             {
@@ -286,7 +243,7 @@ namespace WpfApp1
             }
         }
 
-        //методы на кнопки
+        //methods for buttons
         private void SImg(object sender, RoutedEventArgs e)
         { 
             SaveI();
@@ -303,20 +260,18 @@ namespace WpfApp1
         {
             PrevI();
         }
-        //методы на клавиши
-        private void Grid_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+
+        private void HandleKeys(object sender, KeyEventArgs e)//methods for keys
         {
             switch (e.Key)
             {
                 case Key.Right:
                     NextI();
-                    break ;
+                    break;
                 case Key.Left:
                     PrevI();
                     break;
-                case Key.Space:
-                    FavI();
-                    break;
+                default: break;
             }
         }
 
