@@ -116,6 +116,7 @@ namespace WpfApp1
                     var bitmap = new BitmapImage(Uri);
                     ImagePic.Source = bitmap;
                     counterPics.Content = Convert.ToString(currentFiles + 1) + "/" + Convert.ToString(MaxFiles + 1);
+                    loadHeart();
                 }
                 else
                     System.Windows.MessageBox.Show("Directory has no files or none of them are: JPG,PNG,JPEG,BMP.");
