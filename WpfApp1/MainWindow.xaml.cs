@@ -203,16 +203,15 @@ namespace WpfApp1
             if (favoritePicturesList.Count!=0)
             {
                 CommonOpenFileDialog _fileDialog = new CommonOpenFileDialog();
-                
+                int mesCount = 0;
+                bool mesFlag = false;
                 _fileDialog.InitialDirectory= Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
                 _fileDialog.IsFolderPicker = true;
-                //Nullable<bool> result = fvdlg.ShowDialog();
                 MessageBoxResult Mres;
-                //var msg = "File " + favoritePicturesList[currentFiles].Name +" already exists in directory, rewrite it?";
                 var titlem = "File already in folder";
                 if (_fileDialog.ShowDialog()==CommonFileDialogResult.Ok)
                 {
-                    string path = Path.GetDirectoryName(_fileDialog.FileName); //выбирает не ту папку                                                                   
+                    string path = Path.GetDirectoryName($"{ _fileDialog.FileName}\\"); //выбирает не ту папку                                                                   
                     for (int i = 0; i < favoritePicturesList.Count; i++)
                     {
                         var msg = "File " + favoritePicturesList[i].Name + " already exists in directory, rewrite it?";
@@ -223,21 +222,33 @@ namespace WpfApp1
                             if (File.Exists(NewPath))
                             {
                                 Mres = System.Windows.MessageBox.Show(msg, titlem, MessageBoxButton.YesNo, MessageBoxImage.Question);
-                                if (Mres == MessageBoxResult.Yes)//убедиться что пути разные у файлов(не перизаписываем тот же файл тем что у нас уже есть)
+                                if (Mres == MessageBoxResult.Yes) { 
                                     File.Copy(FromDir, NewPath, overwrite: true);
+                                    mesCount++;
+                                }
                             }
                             else
+                            {
                                 File.Copy(FromDir, NewPath);
+                                mesCount++;
+                            }
                         }
                         else
-                            System.Windows.MessageBox.Show("Check if you're not saving into origin directory","Directory is currently in use",MessageBoxButton.OK,MessageBoxImage.Error);
+                        {
+                            MessageBox.Show("Check if you're not saving into origin directory","Directory is currently in use",MessageBoxButton.OK,MessageBoxImage.Error);
+                            mesFlag = true;
+                            break;
+                        }
                     }
-                    System.Windows.MessageBox.Show("Files were successfully saved", "Save complete", MessageBoxButton.OK, MessageBoxImage.Information);
+                    if (mesFlag==false&&mesCount>0)
+                    {
+                    MessageBox.Show("Files were successfully saved", "Save complete", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
                 }             
             }
             
         }
-        private void NextI() //next image //добавить загрузку сердечка
+        private void NextI() //next image
         {   
             
             if (MaxFiles != 0)
@@ -265,8 +276,8 @@ namespace WpfApp1
                 }
                 else
                     currentFiles--;
-                PathFold.Content = picturesList[currentFiles];
 
+                PathFold.Content = picturesList[currentFiles];
                 counterPics.Content = Convert.ToString(currentFiles + 1) + "/" + Convert.ToString(MaxFiles + 1);
                 var Uri = new Uri(newFilePath + '\\' + Convert.ToString(picturesList[currentFiles]));
                 var bitmap = new BitmapImage(Uri);
