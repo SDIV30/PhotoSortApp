@@ -34,8 +34,8 @@ namespace WpfApp1
     /// </summary>
     public partial class MainWindow : Window
     {
-       // string ImPath ="";
-        string[] extensions = new[] { ".jpg", ".png", ".bmp", ".jpeg" };//доступные расширения пикч мб .CR2
+        // string ImPath ="";
+        readonly string[] extensions = new[] { ".jpg", ".png", ".bmp", ".jpeg" };//доступные расширения пикч мб .CR2
         List<FileInfo> picturesList = new List<FileInfo>();
         List<FileInfo> favoritePicturesList = new List<FileInfo>();//избранные файлы
         //JumpList resF = new JumpList();
@@ -93,7 +93,7 @@ namespace WpfApp1
                     favoritePicturesList.Clear();
                 }
                 //fromFolderLoad(defaultFilePath.FileName);
-                newFilePath = defaultFilePath.FileName + "\\";
+                newFilePath = defaultFilePath.FileName;
                 DirectoryInfo picturesDirectory = new DirectoryInfo(newFilePath);
                 //ImPath = Npath;
                 picturesList = picturesDirectory.GetFiles().Where(f => extensions.Contains(f.Extension.ToLower())).ToList();//набор в массив по расширению
@@ -112,7 +112,7 @@ namespace WpfApp1
                     PathFold.Content = newFilePath;
                     MaxFiles = picturesList.Count() - 1;
                     PathFold.Content = picturesList[0];
-                    var Uri = new Uri(newFilePath + '\\' + Convert.ToString(picturesList[currentFiles]));
+                    var Uri = new Uri($"{newFilePath}\\{Convert.ToString(picturesList[currentFiles])}");
                     var bitmap = new BitmapImage(Uri);
                     ImagePic.Source = bitmap;
                     counterPics.Content = Convert.ToString(currentFiles + 1) + "/" + Convert.ToString(MaxFiles + 1);
@@ -212,22 +212,27 @@ namespace WpfApp1
                 var titlem = "File already in folder";
                 if (_fileDialog.ShowDialog()==CommonFileDialogResult.Ok)
                 {
-                    string path = Path.GetDirectoryName(_fileDialog.FileName+"\\"); //выбирает не ту папку                                                                   
+                    string path = Path.GetDirectoryName(_fileDialog.FileName); //выбирает не ту папку                                                                   
                     for (int i = 0; i < favoritePicturesList.Count; i++)
                     {
                         var msg = "File " + favoritePicturesList[i].Name + " already exists in directory, rewrite it?";
                         string FromDir = newFilePath + "\\" + favoritePicturesList[i];
                         string NewPath = Path.Combine(path, Convert.ToString(favoritePicturesList[i]));//new dir + file to which we'll write
-                        if (File.Exists(NewPath))
+                        if (path != newFilePath)
                         {
-                            Mres = System.Windows.MessageBox.Show(msg, titlem, MessageBoxButton.YesNo, MessageBoxImage.Question);
-                            if (Mres == MessageBoxResult.Yes)//убедиться что пути разные у файлов(не перизаписываем тот же файл тем что у нас уже есть)
-                                File.Copy(FromDir, NewPath,overwrite:true);
+                            if (File.Exists(NewPath))
+                            {
+                                Mres = System.Windows.MessageBox.Show(msg, titlem, MessageBoxButton.YesNo, MessageBoxImage.Question);
+                                if (Mres == MessageBoxResult.Yes)//убедиться что пути разные у файлов(не перизаписываем тот же файл тем что у нас уже есть)
+                                    File.Copy(FromDir, NewPath, overwrite: true);
+                            }
+                            else
+                                File.Copy(FromDir, NewPath);
                         }
                         else
-                            File.Copy(FromDir, NewPath);
-                            
+                            System.Windows.MessageBox.Show("Check if you're not saving into origin directory","Directory is currently in use",MessageBoxButton.OK,MessageBoxImage.Error);
                     }
+                    System.Windows.MessageBox.Show("Files were successfully saved", "Save complete", MessageBoxButton.OK, MessageBoxImage.Information);
                 }             
             }
             
@@ -255,7 +260,9 @@ namespace WpfApp1
             if (MaxFiles != 0)
             {
                 if (currentFiles == 0)
+                {
                     currentFiles = MaxFiles;
+                }
                 else
                     currentFiles--;
                 PathFold.Content = picturesList[currentFiles];
@@ -289,31 +296,32 @@ namespace WpfApp1
         private void Grid_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
             if (e.Key == Key.Right)
-                NextI();
+            { NextI(); }
             if (e.Key == Key.Left)
-                PrevI();
+            { PrevI(); }
             //на пробел добавляем в избранное
-            if(e.Key == Key.Space)
-                FavI();
+            if (e.Key == Key.Space)
+            { FavI(); }
         }
 
-        private void MakeMenuItem(object sender, RoutedEventArgs e)
+        private void MakeMenuItem(object sender, RoutedEventArgs e)//currently unused неиспользуется
         {
             //получили короткое имя, втянули название папки по нему ищим полный путь и загружаем
-            string realName= Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
-            var fff = ((MenuItem)(e.OriginalSource)).DataContext;//сделать наоборот
-            int itemIndex = shortName.IndexOf(fff as string);
-            DirectoryInfo bigPath = new DirectoryInfo(shortName[itemIndex]);
-            var smallPath= bigPath.Parent+"\\"+ bigPath.Name;
-            var diskName = bigPath.Root;
-            for(int i = 0; i < recentFilesCollection.Count; i++)
-            {
-                if (recentFilesCollection[i].Contains(smallPath) && recentFilesCollection[i].Contains(Convert.ToString(diskName)) == true)
-                {
-                    realName = recentFilesCollection[i];//расшифровка в полное имя
-                    break;
-                }
-            }
+            //string realName= Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
+            //var fff = ((MenuItem)(e.OriginalSource)).DataContext;//сделать наоборот
+            //int itemIndex = shortName.IndexOf(fff as string);
+            //DirectoryInfo bigPath = new DirectoryInfo(shortName[itemIndex]);
+            //var smallPath= bigPath.Parent+"\\"+ bigPath.Name;
+            //var diskName = bigPath.Root;
+            //for(int i = 0; i < recentFilesCollection.Count; i++)
+            //{
+            //    if (recentFilesCollection[i].Contains(smallPath) && recentFilesCollection[i].Contains(Convert.ToString(diskName)) == true)
+            //    {
+            //        realName = recentFilesCollection[i];//расшифровка в полное имя
+            //        break;
+            //    }
+            //}
+            ///////////////////////////
             //shrtName.Contains(smalP)
             //fromFolderLoad(realName);
             
